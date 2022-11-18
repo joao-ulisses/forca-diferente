@@ -93,7 +93,8 @@ void checaLetras(char letraCerta[5], No *palavraDigitada)
     {
         for (int i = 0; i < 5; i++)
         {
-            if (palavraDigitada->valor == letraCerta[i]) {
+            if (palavraDigitada->valor == letraCerta[i])
+            {
                 printf("%c ", palavraDigitada->valor);
             }
         }
@@ -134,6 +135,31 @@ void imprimeDigitadas(No *no)
     printf("\n\n");
 }
 
+void escolhePalavra(char *palavraEscolhida[])
+{
+    FILE *f;
+
+    f = fopen("palavras.txt", "r");
+    if (f == 0)
+    {
+        printf("Banco de dados de palavras n�o dispon�vel\n\n");
+        exit(1);
+    }
+
+    int qtddepalavras;
+    fscanf(f, "%d", &qtddepalavras);
+
+    srand(time(0));
+    int randomico = rand() % qtddepalavras;
+
+    for (int i = 0; i <= randomico; i++)
+    {
+        fscanf(f, "%s", palavraEscolhida);
+    }
+
+    fclose(f);
+}
+
 int main()
 {
     for (;;)
@@ -142,10 +168,12 @@ int main()
         int sorteado = rand() % 3;
         sorteado++;
 
+        char palavraEscolhida[5];
+        escolhePalavra(&palavraEscolhida);
+
         int opcao;
         char valor;
         int cont = 0;
-        char *arrayPalavras[] = {"", "teste", "audio", "folha", "sagaz", "termo", "nobre", "furia"};
 
         No *removido;
         Lista *lista = NULL;
@@ -156,7 +184,7 @@ int main()
         {
             system("cls");
             printf("\n\tAdivinhe a palavra de 5 letras: \n\n\t");
-            imprimeAcerto(lista, arrayPalavras[sorteado]);
+            imprimeAcerto(lista, palavraEscolhida);
             imprimeDigitadas(lista);
             printf("\n\n\n\t1 - Inserir letra\t2 - Remover\t3 - Confere\t0- Reinicia\n\n\t");
             scanf("%d", &opcao);
@@ -166,7 +194,7 @@ int main()
             case 1:
                 if (cont < 5)
                 {
-                    printf("\t\nDigite um valor: ");
+                    printf("\n\tDigite um valor: ");
                     fflush(stdin);
                     scanf("%c", &valor);
                     inserir_no_fim(&lista, &valor);
@@ -187,17 +215,18 @@ int main()
                 {
                     printf("Elemento a ser removido: %d\n", removido->valor);
                     free(removido);
+                    cont--;
                 }
-                else{
+                else
+                {
                     printf("Elemento inexistente!\n");
                 }
-                cont--;
                 break;
             case 3:
                 if (cont == 5)
                 {
-                    checaPalavra(arrayPalavras[sorteado], lista);
-                    checaLetras(arrayPalavras[sorteado], lista);
+                    checaPalavra(palavraEscolhida, lista);
+                    checaLetras(palavraEscolhida, lista);
                 }
                 else
                 {
