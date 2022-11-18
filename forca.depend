@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1668810593 source:d:\github\forca\main.c
+	<stddef.h>
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+
